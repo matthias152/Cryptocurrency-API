@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Balance(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    balance = models.FloatField()
+    balance = models.FloatField(blank=True)
 
     def __str__(self):
         return f'{self.user} balance'
@@ -12,7 +12,7 @@ class Balance(models.Model):
 
 class WalletID(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    walletid = models.CharField(max_length=35)
+    walletid = models.CharField(max_length=35, blank=True)
 
     def __str__(self):
         return self.walletid
