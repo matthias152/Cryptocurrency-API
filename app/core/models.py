@@ -33,5 +33,4 @@ class Transaction(models.Model):
     time_created = models.TimeField()
     type = models.CharField(max_length=30)
     quantityCrypto = models.FloatField()
-    price = models.FloatField()
-    balance_after = models.FloatField()
+    price = models.FloatField(blank=True, null=True)
