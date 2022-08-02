@@ -12,6 +12,7 @@ from api.views import (
     TransactionViewSet,
     CryptoCurrencyBuyViewSet,
     CryptoCurrencySellViewSet,
+    RegisterView,
 )
 
 
@@ -21,10 +22,11 @@ router.register('balance', BalanceViewSet)
 router.register('cryptocurrency', CryptoCurrencyViewSet)
 router.register('cryptocurrencybuy', CryptoCurrencyBuyViewSet)
 router.register('cryptocurrencysell', CryptoCurrencySellViewSet)
-router.register('transactions', TransactionViewSet)
+router.register('transaction', TransactionViewSet)
 
-app_name = 'api'
+# app_name = 'api'
 
 urlpatterns = [
-    path('', include(router.urls))
+    path('', include(router.urls)),
+    path('register/', RegisterView.as_view(), name='register'),
 ]

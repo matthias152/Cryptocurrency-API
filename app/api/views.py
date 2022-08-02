@@ -1,18 +1,22 @@
-from crypt import crypt
 from jsonschema import ValidationError
 from rest_framework import (
     viewsets,
-    mixins,
-    status,
+    generics,
 )
 
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser,
+    AllowAny,
+)
 
 from core.models import (
     WalletID,
     Balance,
     CryptoCurrency,
     Transaction,
+    User,
 )
 
 from api.serializers import (
@@ -20,6 +24,7 @@ from api.serializers import (
     BalanceSerializer,
     CryptoCurrencySerializer,
     TransactionSerializer,
+    RegisterSerializer,
 )
 
 import random, string, requests
@@ -32,14 +37,15 @@ coingecko = CoinGeckoAPI()
 today = date.today()
 time = datetime.now().time()
 
+
 def get_coin_price(coin):
     coin_price = coingecko.get_price(ids=str(coin).lower(), vs_currencies='usd')[str(coin).lower()]['usd']
     return float(coin_price)
 
 
 def create_transaction(day, time, type, quantity, price, user, walletid, crypto):
-    url = 'http://127.0.0.1:8000/api/transactions/'
-    # url = reverse('api:transaction-list')
+    url = 'http://127.0.0.1:8000/api/transaction/'
+    # url = reverse('transaction-list')
 
     req = requests.post(url, data={
         'day_created': day,
@@ -78,11 +84,6 @@ class CryptoCurrencyViewSet(viewsets.ModelViewSet):
         receiver_user = data.get('user', None)
 
         sender_crypto = CryptoCurrency.objects.get(user=auth_user, name=cryptoname)
-
-        # try:
-        #     receiver_crypto = CryptoCurrency.objects.get(user=receiver_user, name=cryptoname)
-        # except:
-        #     receiver_crypto = False
         receiver_crypto = try_get_user_crypto(receiver_user, cryptoname)
 
         if sender_crypto.quantity < float(quantity_send):
@@ -111,6 +112,7 @@ class CryptoCurrencyViewSet(viewsets.ModelViewSet):
 class CryptoCurrencyBuyViewSet(viewsets.ModelViewSet):
     serializer_class = CryptoCurrencySerializer
     queryset = CryptoCurrency.objects.all()
+    suffix = 'cryptocurrencybuy'
     permission_classes = [IsAuthenticated]
     
     def perform_create(self, serializer):
@@ -228,3 +230,9 @@ class TransactionViewSet(viewsets.ModelViewSet):
             self.permission_classes = [IsAdminUser]
 
         return super(TransactionViewSet, self).get_permissions()
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer

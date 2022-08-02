@@ -75,7 +75,6 @@ class ModelTests(TestCase):
             type='sell',
             quantityCrypto=30.5,
             price=20.42,
-            balance_after=1000,
         )
 
         self.assertEqual(transaction.walletid.walletid, 'justatestwalletid')
