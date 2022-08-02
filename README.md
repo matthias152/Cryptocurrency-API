@@ -20,7 +20,7 @@ Users have their own Wallet and Balance which are created with POST requests on 
 /api/walletid/
 /api/balance/
 ```
-Users are able to buy/sell/send cryptos on endpoints:
+Users are able to buy/sell/send cryptos with POST requests on endpoints:
 ```
 api/cryptocurrency/
 api/cryptocurrencybuy/
