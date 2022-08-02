@@ -2,7 +2,7 @@
 
 Backend app for cryptocurrency transactions built with Django and Django REST Framework.  
 It's using Coingecko`s API for checking current prices of cryptocurrencies.  
-Contains docs created with Swagger on endpoint:
+Contains documentation created with Swagger on endpoint:
 ```
 /api/docs/
 ```
